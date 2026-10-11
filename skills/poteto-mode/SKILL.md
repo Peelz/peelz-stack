@@ -145,3 +145,30 @@ A large or cross-cutting effort (a migration across many call sites, an ambitiou
 - **Multi-phase or multi-PR plan.** Work that spans phases or stacked PRs. File: `playbooks/multi-phase-plan.md`.
 - **Worktree and simulator cleanup.** Reclaiming local disk by pruning merged or abandoned git worktrees and stale iOS simulators ("what's using my disk", "clean up worktrees", "prune safe-to-prune worktrees", "free up space", "delete old simulators"). File: `playbooks/worktree-cleanup.md`.
 - **Opening a PR.** Invoked at the end of every other playbook.
+
+
+## Harness
+
+pstack was written for Cursor. In another harness (Claude Code, Codex, Pi, OpenCode, and others), read
+Cursor-specific instructions in this skill, its playbooks, and the routed skills through these mappings.
+If you can't tell which harness you are, check which of the paths below exist.
+
+- **Subagents.** `Task` means your subagent tool: `Agent` in Claude Code (`subagent_type: general-purpose`),
+  `task` in OpenCode (`subagent_type: general`), `spawn_agent` in Codex, `subagent` in Pi with the
+  pi-subagents extension (one child per `{agent, task}` call; parallel steps via one workflow script with
+  `runs.run`/`runs.all`; the `model` option sets the child's model; `worktree: true` isolates a child in its
+  own worktree). Drop parameters your tool doesn't have. `environment: "cloud"` means a Cursor cloud agent.
+  Elsewhere, run that agent locally in its own worktree. If your harness has no subagent tool (Pi without
+  the pi-subagents extension included), do each delegated step yourself, one after another.
+- **`poteto-agent`.** Where it isn't registered as a subagent, spawn a general subagent whose prompt starts
+  with: "Read `agents/poteto-agent.md` in full before any work." Then give the task.
+- **Transcripts.** Read only the active workspace's sessions, never other projects'. Cursor: the
+  `agent-transcripts/` directory the system prompt names. Claude Code: `~/.claude/projects/<slug>/*.jsonl`,
+  where `<slug>` is the workspace path with every character that isn't a letter or digit turned into "-".
+  Pi: `~/.pi/agent/sessions/--<slug>--/*.jsonl`, where `<slug>` is the workspace path with the leading slash
+  dropped and each "/" turned into "-". Codex: `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`, keeping files
+  whose first line has `payload.cwd` equal to the workspace path. OpenCode:
+  `~/.local/share/opencode/storage/`.
+- **Skill folders.** Project: `.cursor/skills/` (Cursor), `.claude/skills/` (Claude Code), `.pi/skills/` (Pi),
+  `.agents/skills/` (Codex, OpenCode, and others). User: `~/.cursor/skills/`, `~/.claude/skills/`,
+  `~/.pi/agent/skills/`, `~/.codex/skills/`, `~/.agents/skills/`.
