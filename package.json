@@ -1,0 +1,14 @@
+{
+  "name": "peelz-stack",
+  "version": "1.0.0",
+  "description": "peelz fork of pstack (cursor/plugins) with multi-harness + pi-subagents support baked in",
+  "keywords": [
+    "pi-package"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Peelz/peelz-stack.git"
+  }
+}
